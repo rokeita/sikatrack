@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SikaTrack — Simple bookkeeping for your shop</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+  <header>
+    <h1>SikaTrack</h1>
+    <p class="tagline">Simple bookkeeping for your shop</p>
+  </header>
+
+  <section class="cards" aria-label="Today's totals">
+    <div class="card">
+      <span class="label">Sales today</span>
+      <span class="value sales" id="salesToday">GH₵0.00</span>
+    </div>
+    <div class="card">
+      <span class="label">Expenses today</span>
+      <span class="value expenses" id="expensesToday">GH₵0.00</span>
+    </div>
+    <div class="card profit">
+      <span class="label">Profit today</span>
+      <span class="value" id="profitToday">GH₵0.00</span>
+    </div>
+  </section>
+
+  <section class="actions">
+    <button id="addSaleBtn" class="big-btn sale">+ Add Sale</button>
+    <button id="addExpenseBtn" class="big-btn expense">+ Add Expense</button>
+  </section>
+
+  <section id="formSection" class="form-card hidden" aria-label="Add entry">
+    <h2 id="formTitle">Add Sale</h2>
+    <form id="entryForm">
+      <label>
+        Amount (GH₵)
+        <input type="number" id="amount" inputmode="decimal" step="0.01" min="0.01" placeholder="0.00" required>
+      </label>
+      <label>
+        Category
+        <select id="category"></select>
+      </label>
+      <label>
+        Note <span class="optional">(optional)</span>
+        <input type="text" id="note" placeholder="e.g. 2 bags of rice" maxlength="80">
+      </label>
+      <label>
+        Date
+        <input type="date" id="entryDate" required>
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="save-btn" id="saveBtn">Save Sale</button>
+        <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="summary" aria-label="Summaries">
+    <h2>Summary</h2>
+    <table>
+      <thead>
+        <tr><th></th><th>Sales</th><th>Expenses</th><th>Profit</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Today</td><td id="sumSalesToday">GH₵0.00</td><td id="sumExpToday">GH₵0.00</td><td id="sumProfitToday">GH₵0.00</td></tr>
+        <tr><td>This week</td><td id="sumSalesWeek">GH₵0.00</td><td id="sumExpWeek">GH₵0.00</td><td id="sumProfitWeek">GH₵0.00</td></tr>
+        <tr><td>This month</td><td id="sumSalesMonth">GH₵0.00</td><td id="sumExpMonth">GH₵0.00</td><td id="sumProfitMonth">GH₵0.00</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="history" aria-label="History">
+    <h2>History</h2>
+    <div id="historyList"></div>
+    <p id="emptyState" class="empty">No entries yet. Add your first sale or expense above.</p>
+  </section>
+
+  <footer>
+    <p>Your records stay on this device. Nothing is sent anywhere.</p>
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
