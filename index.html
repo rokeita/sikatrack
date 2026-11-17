@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#16a34a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SikaTrack">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <title>SikaTrack — Simple bookkeeping for your shop</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,6 +20,12 @@
     <h1>SikaTrack</h1>
     <p class="tagline">Simple bookkeeping for your shop</p>
   </header>
+
+  <section id="installBanner" class="install-banner hidden" aria-label="Install app">
+    <p><strong>Install SikaTrack on your phone</strong> — it works offline, just like an app.</p>
+    <button id="installBtn" class="install-btn hidden">Install SikaTrack app</button>
+    <p id="installHint" class="install-hint hidden">On Android Chrome: tap the ⋮ menu, then “Add to Home screen”.</p>
+  </section>
 
   <section class="cards" aria-label="Today's totals">
     <div class="card">
@@ -77,6 +91,7 @@
     <h2>History</h2>
     <div id="historyList"></div>
     <p id="emptyState" class="empty">No entries yet. Add your first sale or expense above.</p>
+    <button id="clearSamplesBtn" class="clear-samples-btn hidden">Clear sample entries</button>
   </section>
 
   <footer>
@@ -84,5 +99,11 @@
   </footer>
 </main>
 <script src="app.js"></script>
+<script>
+  // Register the service worker so the app works offline once installed.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(function () {});
+  }
+</script>
 </body>
 </html>

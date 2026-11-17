@@ -157,3 +157,52 @@ header h1 { margin: 0; font-size: 2rem; }
 .empty { color: #888; text-align: center; margin: 12px 0 4px; }
 
 footer { text-align: center; color: #888; font-size: 0.85rem; }
+
+.install-banner {
+  background: #e8f7ee;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.install-banner p { margin: 0 0 12px; }
+
+.install-btn {
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+
+.install-hint { color: #666; font-size: 0.9rem; margin: 12px 0 0; }
+
+.sample-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-top: 4px;
+}
+
+.clear-samples-btn {
+  display: block;
+  margin: 16px auto 0;
+  background: #e5e7eb;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}

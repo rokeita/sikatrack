@@ -2,11 +2,31 @@
 // All data lives in localStorage on this device. Nothing is sent anywhere.
 
 const KEY = 'sikatrack.entries.v1';
+const SAMPLES_KEY = 'sikatrack.samples.v1';
+
+// Clearly-marked sample entries, seeded once on a fresh install so the
+// totals can be seen working. They are labelled SAMPLE and clearable.
+function seedSamples() {
+  try {
+    if (localStorage.getItem(SAMPLES_KEY) === 'cleared') return;
+  } catch (e) {
+    return;
+  }
+  if (entries.length) return;
+  const today = dateStr(new Date());
+  entries = [
+    { id: Date.now() - 2, type: 'sale', amount: 120, category: 'Provisions', note: '2 bags of rice', date: today, sample: true },
+    { id: Date.now() - 1, type: 'sale', amount: 85, category: 'Drinks', note: 'Pack of Malta Guinness', date: today, sample: true },
+    { id: Date.now(), type: 'expense', amount: 40, category: 'Transport', note: 'Trotro to the market', date: today, sample: true },
+  ];
+  save();
+}
 
 const SALE_CATEGORIES = ['Provisions', 'Foodstuffs', 'Drinks', 'Services', 'Other'];
 const EXPENSE_CATEGORIES = ['Stock / Inventory', 'Transport', 'Airtime & Data', 'Rent', 'Utilities', 'Other'];
 
 let entries = load();
+seedSamples();
 let formType = 'sale';
 
 const $ = (id) => document.getElementById(id);
@@ -98,6 +118,8 @@ function render() {
   $('sumExpMonth').textContent = formatGHS(m.expenses);
   $('sumProfitMonth').textContent = formatGHS(m.profit);
 
+  $('clearSamplesBtn').classList.toggle('hidden', !entries.some((e) => e.sample));
+
   renderHistory();
 }
 
@@ -134,6 +156,12 @@ function renderHistory() {
       note.className = 'note';
       note.textContent = e.note;
       info.appendChild(note);
+    }
+    if (e.sample) {
+      const badge = document.createElement('span');
+      badge.className = 'sample-badge';
+      badge.textContent = 'SAMPLE';
+      info.appendChild(badge);
     }
 
     const amount = document.createElement('span');
@@ -209,6 +237,42 @@ $('entryForm').addEventListener('submit', (ev) => {
   save();
   closeForm();
   render();
+});
+
+$('clearSamplesBtn').addEventListener('click', () => {
+  entries = entries.filter((e) => !e.sample);
+  try {
+    localStorage.setItem(SAMPLES_KEY, 'cleared');
+  } catch (e) {}
+  save();
+  render();
+});
+
+// Install prompt: show the install button when the browser offers it,
+// otherwise show the manual "Add to Home screen" steps.
+let deferredPrompt = null;
+const isStandalone =
+  window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+if (!isStandalone) {
+  $('installBanner').classList.remove('hidden');
+  window.addEventListener('beforeinstallprompt', (ev) => {
+    ev.preventDefault();
+    deferredPrompt = ev;
+    $('installBtn').classList.remove('hidden');
+  });
+  setTimeout(() => {
+    if (!deferredPrompt) {
+      $('installBtn').classList.add('hidden');
+      $('installHint').classList.remove('hidden');
+    }
+  }, 1500);
+}
+$('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  $('installBanner').classList.add('hidden');
 });
 
 render();
